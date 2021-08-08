@@ -1,1 +1,17 @@
+$primary:rgb(206, 95, 54);
+$secondary:rgb(238, 111, 111);
+$success:rgb(66, 80, 204);
+$danger:rgb(207, 37, 79);
+
+
 @import '~bootstrap/scss/bootstrap.scss';
+
+// 全站都會使用的共同樣式
+html {
+    font-size: 12px;
+   }
+   body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+   }

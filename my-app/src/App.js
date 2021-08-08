@@ -1,45 +1,47 @@
-import React, { useState, useEffect } from 'react'
-// 模擬從伺服器來的資料
-import { data } from './0629'
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
+// 以下要導入所需要頁面
+import Home from './pages/Home'
+import About from './pages/About'
+import Login from './pages/Login'
+import OrderList from './pages/OrderList'
+import Cart from './pages/Shppingcart/Cart'
+
+// 路由器所在的位置，記錄所有的路由
+// 全域狀態放在這裡
 function App() {
-  const [productData, setProductData] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [auth, setAuth] = useState(false)
+  return (
+    <Router>
+      <>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/order">OrderList</Link>
+        <Link to="/cart">Cart</Link>
 
-  // componentDidMount
-  useEffect(() => {
-    // 1. 開啟載入狀態 isLoading
-    setIsLoading(true)
-
-    // 2. 載入資料(從伺服器載入)
-    // fetch url...
-    setProductData(data)
-
-    // 3. 關閉載入狀態 isLoading X秒後
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
-  }, [])
-
-  const spinner = (
-    <div className="spinner-border text-success" role="status">
-      <span className="sr-only">Loading...</span>
-    </div>
+        {/* 以下是路由表 */}
+        <Switch>
+          <Route path="/cart">
+            <Cart />
+          </Route>
+          <Route path="/order">
+            <OrderList />
+          </Route>
+          <Route path="/login">
+            <Login setAuth={setAuth} auth={auth} />
+          </Route>
+          <Route path="/about/:id?">
+            <About auth={auth} />
+          </Route>
+          <Route exact path="/">
+            <Home auth={auth} />
+          </Route>
+        </Switch>
+      </>
+    </Router>
   )
-
-  const display = (
-    <ul>
-      {productData.map((product, i) => {
-        return (
-          <li key={product.id}>
-            {product.name}/{product.price}
-          </li>
-        )
-      })}
-    </ul>
-  )
-
-  return <>{isLoading ? spinner : display}</>
 }
 
 export default App
